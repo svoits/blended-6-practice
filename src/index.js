@@ -1,11 +1,12 @@
 import "./styles/normalize.css";
 import "./styles/index.css";
-import { getAllProducts, getProductById } from "./requests/products";
+import { getAllProducts, getProductById, addNewProduct } from "./requests/products";
 import {
   createProductsMarkup,
   createProductCard,
 } from "./services/markupService";
 import refs from "./refs";
+
 
 // task 1
 async function renderProducts() {
@@ -36,4 +37,26 @@ async function onFormSubmit(e) {
   } catch (error) {
     console.log(error);
   }
+}
+
+// task3
+
+refs.newFormCreateProduct.addEventListener('submit', onCreateProductFormSubmit);
+
+async function onCreateProductFormSubmit(evt) {
+ try {
+  evt.preventDefault();
+
+  const newProduct = {};
+
+  new FormData(evt.currentTarget).forEach((elem, idx) =>{
+    newProduct[idx] = elem;
+  })
+  
+  const newResponse = await addNewProduct(newProduct);
+  refs.newProduct.innerHTML = createProductCard(newResponse);
+
+ } catch (error) {
+  console.log(error);
+ }
 }
