@@ -11,3 +11,10 @@ export function createProductsMarkup(data) {
     )
     .join("");
 }
+
+export function createProductCard({ title, description, price }) {
+  return ` 
+  <h2>${title}</h2>
+  <p>${description}</p>
+  <p>${price}</p>`;
+}
