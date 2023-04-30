@@ -14,3 +14,9 @@ export async function addNewProduct(data) {
   const response = await instance.post("/products/add", data);
   return response.data;
 }
+
+export async function deleteProduct(id) {
+  const response = await instance.delete(`/products/${id}`);
+  console.log(response);
+  return response;
+}

@@ -1,12 +1,16 @@
 import "./styles/normalize.css";
 import "./styles/index.css";
-import { getAllProducts, getProductById, addNewProduct } from "./requests/products";
+import {
+  getAllProducts,
+  getProductById,
+  addNewProduct,
+  deleteProduct,
+} from "./requests/products";
 import {
   createProductsMarkup,
   createProductCard,
 } from "./services/markupService";
 import refs from "./refs";
-
 
 // task 1
 async function renderProducts() {
@@ -41,22 +45,44 @@ async function onFormSubmit(e) {
 
 // task3
 
-refs.newFormCreateProduct.addEventListener('submit', onCreateProductFormSubmit);
+refs.newFormCreateProduct.addEventListener("submit", onCreateProductFormSubmit);
 
 async function onCreateProductFormSubmit(evt) {
- try {
-  evt.preventDefault();
+  try {
+    evt.preventDefault();
 
-  const newProduct = {};
+    const newProduct = {};
 
-  new FormData(evt.currentTarget).forEach((elem, idx) =>{
-    newProduct[idx] = elem;
-  })
-  
-  const newResponse = await addNewProduct(newProduct);
-  refs.newProduct.innerHTML = createProductCard(newResponse);
+    new FormData(evt.currentTarget).forEach((elem, idx) => {
+      newProduct[idx] = elem;
+    });
 
- } catch (error) {
-  console.log(error);
- }
+    const newResponse = await addNewProduct(newProduct);
+    refs.newProduct.innerHTML = createProductCard(newResponse);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// task 4
+
+refs.deletionProductForm.addEventListener("submit", onDeleteProductSubmit);
+
+async function onDeleteProductSubmit(e) {
+  try {
+    e.preventDefault();
+    const id = e.currentTarget.elements.deletionId.value.trim();
+
+    const resp = await deleteProduct(id);
+
+    // if (resp.status === 200) {
+    //   alert(`SUCCESS! ${resp.data.title}`);
+    // }
+
+    if (resp) {
+      alert(`SUCCESS! ${resp.data.title}`);
+    }
+  } catch (error) {
+    alert(`ERROR: ${error}`);
+  }
 }
